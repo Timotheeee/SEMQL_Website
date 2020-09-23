@@ -1,0 +1,26 @@
+{
+  "name": "SEMQL",
+  "version": "1.0.0",
+  "description": "A simple todo server",
+  "main": "todo_server.js",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "csv-parser": "^2.3.3",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "express-session": "^1.17.0",
+    "jquery": "^3.4.1",
+    "morgan": "^1.9.1",
+    "nodemon": "^2.0.4",
+    "passport": "^0.2.1",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

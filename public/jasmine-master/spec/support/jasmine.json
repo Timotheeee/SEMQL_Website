@@ -1,0 +1,18 @@
+{
+  "spec_dir": "spec",
+  "spec_files": [
+    "core/**/*.js",
+    "npmPackage/**/*.js"
+  ],
+  "helpers": [
+    "helpers/asyncAwait.js",
+    "helpers/checkForMap.js",
+    "helpers/checkForSet.js",
+    "helpers/checkForSymbol.js",
+    "helpers/checkForTypedArrays.js",
+    "helpers/integrationMatchers.js",
+    "helpers/promises.js",
+    "helpers/nodeDefineJasmineUnderTest.js"
+  ],
+  "random": true
+}
