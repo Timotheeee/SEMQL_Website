@@ -12,10 +12,7 @@
     height:30px;
 }
 #webtitle{
-    text-align: center;
-    width: -moz-available;
-    color: black ;
-    background-color: purple;
+    margin-top: 21px;
 }
 #webtitle a{
     font-size: 20px;
@@ -23,7 +20,9 @@
     color: white;
 }
 
-
+#linktitle{
+    margin-top: 29px;
+}
 
 
 /*body{
@@ -74,6 +73,13 @@ aside{
     border-radius: 1em;
 }
 
+#about{
+    width: 94%;
+    margin-left: auto;
+    position: relative;
+    margin-top: 1.5em;
+}
+
 projects{
     align-content: center;
     display: inline-block;
@@ -109,8 +115,6 @@ projects{
 }
 
 #container{
-    background: black;
-    border-radius: 2em;
     margin: 30px;
     height:1000em;
 }
