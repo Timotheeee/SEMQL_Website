@@ -12,34 +12,41 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
         var longestStreak = "";
 
         for (var i3 = 0; i3 < hs.length; i3++) {
-            //console.log("hs is " + hs[i]);
+            if(i===1)console.log("hs[i3] is " + hs[i3]);
             var streak = 0;
             var words = "";
             var i2 = i3;
+            var found = false;
             for (var j = 0; j < gs.length; j++) {//for every human word check how many generated words match in a row
-                //console.log("hs[i2] is " + hs[i2] + ", gs[j] is " + gs[j]);
+                if(i===1)console.log("hs[i2] is " + hs[i2] + ", gs[j] is " + gs[j]);
                 if (gs[j] === hs[i2]) {
                     streak++;
                     words += gs[j] + " ";
-                    //console.log("streak is " + streak + ", words is " + words);
+                    found=true;
+                    if(i===1)console.log("streak is " + streak + ", words is " + words);
+                    if (streak > longestStreakCount) {
+                        longestStreakCount = streak;
+                        longestStreak = words;
+                    }
                 } else {
                     if (streak > longestStreakCount) {
                         longestStreakCount = streak;
                         longestStreak = words;
                     }
+                    if(found)break;
                 }
-                i2++;
+                if(found)i2++;
             }
         }
 
-        console.log(longestStreak);
+        if(i===1)console.log(longestStreak);
 
 
 
 
 
-        human.push({text: h, highlight: longestStreak, id: i,side:"left"});
-        gen.push({text: g, highlight: longestStreak, id: i,side:"right"});
+        human.push({text: h.trim(), highlight: longestStreak.trim(), id: i,side:"left"});
+        gen.push({text: g.trim(), highlight: longestStreak.trim(), id: i,side:"right"});
         //break;
     }
 
@@ -50,6 +57,10 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
 
     setTimeout(function () {
         for (var i = 0; i < window.gen.length; i++) {
+            if(i===1){
+                console.log($("#comp" + i + "left").html());
+                console.log(window.human[i].highlight);
+            }
             var h = $("#comp" + i + "left").html().replace(window.human[i].highlight, "<span class='highlight'>" + window.human[i].highlight + "</span>");
             var g = $("#comp" + i + "right").html().replace(window.gen[i].highlight, "<span class='highlight'>" + window.gen[i].highlight + "</span>");
 
