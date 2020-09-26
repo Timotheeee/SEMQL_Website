@@ -115,8 +115,8 @@ projects{
 }
 
 #container{
-    margin: 30px;
-    height:1000em;
+    box-sizing: unset;
+    position: relative;
 }
 #mainContainer{
     overflow-x: hidden;
@@ -124,14 +124,17 @@ projects{
 }
 
 .comparison{
-    padding: 5px;
+    padding: 3px;
     border: 1px solid black;
     border-radius: 3px;
-    margin: auto;
-    margin-top: 4px;
+    margin: 10px;
     width: 90%;
+<<<<<<< HEAD
     height:82px;
 
+=======
+    height: 6em;
+>>>>>>> Fixed loading Demo from csv file
 }
 
 html,body{
