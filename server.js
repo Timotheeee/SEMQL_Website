@@ -5,7 +5,7 @@ const
         bodyParser = require('body-parser'),
         morgan = require('morgan'),
         session = require('express-session'),
-        csv = require('csv-parser'),
+        csv = require('fast-csv'),
         fs = require('fs');
 app = express();
 
@@ -50,7 +50,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 var data = [];
 fs.createReadStream('annotation_data.csv')
-        .pipe(csv())
+        .pipe(csv.parse({headers: true}))
         .on('data', (row) => {
             //var txt = JSON.stringify(row);
             data.push(row);
@@ -59,9 +59,17 @@ fs.createReadStream('annotation_data.csv')
             console.log('CSV file successfully processed');
         });
 
-
-
-
+/*
+fs.createReadStream('annotation_data.csv')
+    .pipe(csv())
+    .on('data', (row) => {
+        //var txt = JSON.stringify(row);
+        data.push(row);
+    })
+    .on('end', () => {
+        console.log('CSV file successfully processed');
+    });
+*/
 
 app.get('/api/data/', function (req, res) {
     //load();
