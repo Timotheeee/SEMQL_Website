@@ -51,7 +51,7 @@ aside{
 #main1{
     float: left;
     height: 90%;
-    width: 43%;
+    width: 30%;
     margin-left: 5%;
     background: #bababa;
     text-align: center;
@@ -61,10 +61,22 @@ aside{
     border-radius: 1em;
 }
 #main2{
-    float: right;
+    float: left;
     height: 90%;
-    width: 43%;
-    margin-right: 5%;
+    width: 30%;
+    margin-right: 0;
+    background: #bababa;
+    text-align: center;
+    display: inline-block;
+    position: relative;
+    margin-top: 1.5em;
+    border-radius: 1em;
+}
+#main3{
+    float: left;
+    height: 90%;
+    width: 30%;
+    margin-right: 0px;
     background: #bababa;
     text-align: center;
     display: inline-block;
@@ -144,4 +156,8 @@ html{
 }
 .highlight{
     color:green;
+}
+
+.fixinput{
+    width:300px;
 }
