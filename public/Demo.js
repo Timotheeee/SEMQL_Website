@@ -1,6 +1,6 @@
 "use strict";
 $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
-    
+
     window.human = [];
     window.gen = [];
     window.fixed = [];
@@ -34,6 +34,7 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
         }
 
 
+
         for (var i4 = 0; i4 < highlights.length; i4++) {
             highlights[i4] = highlights[i4].trim();
         }
@@ -51,12 +52,12 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
         fixed.push({text: "", id: i,side:"fixed"});
         
         if(i===50)break;
+
     }
 
     if (window.home) {
         window.home.update();
     }
-
 
     setTimeout(function () {
         for (var i = 0; i < window.gen.length; i++) {
@@ -85,9 +86,4 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
             });
         }
     }, 1000);
-
-
-
-
-
 });
