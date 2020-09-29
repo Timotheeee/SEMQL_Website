@@ -84,6 +84,13 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
                console.log(input);
                $("#comp" + id + "fixed").html(newhtml);
             });
+            
+            $("#sem" + i).on("click",function(){
+               var id = $(this).attr("id").replace("sem","");
+               var newhtml = $("#comp" + id + "right").html();
+               $("#comp" + id + "fixed").html(newhtml);
+               $("#comp" + id + "fixed").attr("style","color:yellow")
+            });
         }
     }, 1000);
 });
