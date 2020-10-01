@@ -75,7 +75,7 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
 
             $("#fix" + i).on("click",function(){
                var id = $(this).attr("id").replace("fix","");
-               var newhtml = $("#comp" + id + "right").html();
+               var newhtml = $("#comp" + id + "right").html().split('<div id="semanticInputButtons">')[0];
                var input = $("#input" + id).val();
                var words = input.split("!=");
                newhtml = newhtml.replace(words[0].trim()+" ",words[1].trim()+" ");
@@ -87,9 +87,9 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
             
             $("#sem" + i).on("click",function(){
                var id = $(this).attr("id").replace("sem","");
-               var newhtml = $("#comp" + id + "right").html();
+               var newhtml = $("#comp" + id + "right").html().split('<div id="semanticInputButtons">')[0];
                $("#comp" + id + "fixed").html(newhtml);
-               $("#comp" + id + "fixed").attr("style","color:yellow")
+               $("#comp" + id + "fixed").attr("style","color:yellow");
             });
         }
     }, 1000);
