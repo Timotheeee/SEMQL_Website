@@ -163,3 +163,7 @@ html{
 .fixinput{
     width:300px;
 }
+
+.bad{
+    color:red;
+}

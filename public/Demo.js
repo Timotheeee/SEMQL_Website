@@ -78,7 +78,7 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
                var newhtml = $("#comp" + id + "right").html().split('<div id="semanticInputButtons">')[0];
                var input = $("#input" + id).val();
                var words = input.split("!=");
-               newhtml = newhtml.replace(words[0].trim()+" ",words[1].trim()+" ");
+               newhtml = newhtml.replace(words[0].trim()+" ","<span class='bad'>" + words[1].trim()+"</span> ");
                console.log(id);
                console.log(newhtml);
                console.log(input);
