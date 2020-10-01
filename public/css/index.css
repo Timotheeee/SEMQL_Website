@@ -2,22 +2,24 @@
 
 @import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700");
 
-#webtitle h1{
+#webtitle h1 {
     position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 50%;
+    max-width: 76%;
     display: block;
     color: white;
-    height:30px;
+    height: 44px;
+    margin: -11px auto 0px;
 }
-#webtitle{
+
+#webtitle {
     margin-top: 21px;
+    margin-left: initial;
+    margin-right: auto;
 }
-#webtitle a{
-    font-size: 20px;
-    margin-left: 5px;
-    color: white;
+
+#navbarResponsive {
+    position: relative;
+    margin-right: 49%;
 }
 
 #linktitle{
@@ -106,8 +108,10 @@ projects{
     width: 15em;
 }
 
-
-
+#semanticInputButtons {
+    position: relative;
+    padding-top: 14%;
+}
 
 #list{
     padding: 1em;
@@ -139,9 +143,9 @@ projects{
     padding: 3px;
     border: 1px solid black;
     border-radius: 3px;
-    margin: 10px;
     width: 90%;
     height: 6em;
+    margin: 10px 10px 29%;
 }
 
 html,body{
