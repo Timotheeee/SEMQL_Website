@@ -1,4 +1,24 @@
 "use strict";
+
+function compare(a,b){
+    if(a === undefined || b === undefined)return false;
+    a = a.replace(/[^\w\s]/gi, '').toLowerCase();
+    b = b.replace(/[^\w\s]/gi, '').toLowerCase();
+    return a===b;
+}
+
+function contains(highlights,words){
+    for (var i = 0; i < highlights.length; i++) {
+        //console.log("comparing: " + highlights[i].trim() + ", " + words.trim());
+        if(highlights[i].trim().includes(words.trim())){
+            //console.log("returning true");
+            return true;
+        }
+            
+    }
+    return false;
+}
+
 $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
 
     window.human = [];
@@ -18,18 +38,18 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
             var found = false;
             for (var j = 0; j < gs.length; j++) {//for every human word check how many generated words match in a row
                 if(i===0)console.log("hs[i2] is " + hs[i2] + ", gs[j] is " + gs[j]);
-                if (gs[j] === hs[i2]) {
+                if (compare(gs[j],hs[i2])) {
                     words += gs[j] + " ";
                     found=true;
                 } else {
-                    if(i===0)console.log("pushing words: " + words);
-                    if(words.trim().split(" ").length>1)highlights.push(words);
+                    if(i===0 && !contains(highlights,words))console.log("pushing words: " + words);
+                    if(words.trim().split(" ").length>1 && !contains(highlights,words))highlights.push(words);
                     if(found)break;
                 }
                 if(found)i2++;
             }
             if(i===0)console.log("pushing words: " + words);
-            if(words.trim().split(" ").length>1)highlights.push(words);
+            if(words.trim().split(" ").length>1  && !contains(highlights,words))highlights.push(words);
             
         }
 
@@ -62,8 +82,8 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
     setTimeout(function () {
         for (var i = 0; i < window.gen.length; i++) {
             for (var j = 0; j < window.human[i].highlights.length; j++) {
-                var h = $("#comp" + i + "left").html().replace(window.human[i].highlights[j], "<span class='highlight'>" + window.human[i].highlights[j] + "</span>");
-                var g = $("#comp" + i + "right").html().replace(window.gen[i].highlights[j], "<span class='highlight'>" + window.gen[i].highlights[j] + "</span>");
+                var h = $("#comp" + i + "left").html().replace(window.human[i].highlights[j], "<span class='highlight" + j + "'>" + window.human[i].highlights[j] + "</span>");
+                var g = $("#comp" + i + "right").html().replace(window.gen[i].highlights[j], "<span class='highlight" + j + "'>" + window.gen[i].highlights[j] + "</span>");
 
                 $("#comp" + i + "left").html(h);
                 $("#comp" + i + "right").html(g);
@@ -77,20 +97,39 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
                var id = $(this).attr("id").replace("fix","");
                var newhtml = $("#comp" + id + "right").html().split('<div id="semanticInputButtons">')[0];
                var input = $("#input" + id).val();
-               var words = input.split("!=");
-               newhtml = newhtml.replace(words[0].trim()+" ","<span class='bad'>" + words[1].trim()+"</span> ");
-               console.log(id);
-               console.log(newhtml);
-               console.log(input);
-               $("#comp" + id + "fixed").html(newhtml);
+               var commands = input.split(";");
+                for (var c = 0; c < commands.length;c++) {
+                    var command = commands[c];
+                    if(command.includes("=>")){
+                        var words = command.split("=>");
+                        newhtml = newhtml.replace(" " + words[0].trim()+" ","<span class='bad'> " + words[1].trim()+"</span> ");
+                        $("#comp" + id + "fixed").html(newhtml);
+                    } else {
+                        var words = command.split("=");
+                        newhtml = newhtml.replace(words[0].trim()+ "","<span class='correct'>" + words[0].trim()+ "</span> ");
+                        newhtml = newhtml.replace(words[1].trim()+ "","<span class='correct'>" + words[1].trim()+ "</span> ");
+                        var left = $("#comp" + id + "left").html();
+                        var right = $("#comp" + id + "right").html();
+                        left = left.replace(words[0].trim()+ "","<span class='correct'>" + words[0].trim()+ "</span> ");
+                        left = left.replace(words[1].trim()+ "","<span class='correct'>" + words[1].trim()+ "</span> ");
+                        right = right.replace(words[0].trim()+ "","<span class='correct'>" + words[0].trim()+ "</span> ");
+                        right = right.replace(words[1].trim()+ "","<span class='correct'>" + words[1].trim()+ "</span> ");
+                        $("#comp" + id + "left").html(left);
+                        $("#comp" + id + "right").html(right);
+                        
+                        
+                        $("#comp" + id + "fixed").html(newhtml);
+                    }
+
+                }
+
             });
-            
-            $("#sem" + i).on("click",function(){
-               var id = $(this).attr("id").replace("sem","");
-               var newhtml = $("#comp" + id + "right").html().split('<div id="semanticInputButtons">')[0];
-               $("#comp" + id + "fixed").html(newhtml);
-               $("#comp" + id + "fixed").attr("style","color:yellow");
-            });
+
         }
+        //temporary
+        $("#comp3right textarea").html("f => male; who were nominated for oscars for their contribution to movies?=>;What are the death places of people whose gender is=Where did x die?");
+        $("#comp2right textarea").html("2607 or less?=at most 2607?");
+        $("#comp1right textarea").html("gender => name");
+        $("#comp0right textarea").html("people who were not deceased=those who have not died");
     }, 1000);
 });
