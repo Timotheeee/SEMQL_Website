@@ -91,7 +91,8 @@ projects{
 }
 
 #semanticInputButtons {
-    margin-top: 16%;
+    position: absolute;
+    top: 173px;
 }
 
 #list {
@@ -102,7 +103,7 @@ projects{
     margin: auto;
 }
 
-#treeExample {
+.tree {
     max-width: 73%;
 }
 
@@ -128,9 +129,10 @@ projects{
     border: 1px solid black;
     border-radius: 3px;
     width: 90%;
-    height: 6em;
+    height: 10em;
     margin: 10px 10px 29%;
     margin-bottom: 150px;
+    position: relative;
 }
 
 html,body{

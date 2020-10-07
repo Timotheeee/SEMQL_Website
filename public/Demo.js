@@ -94,10 +94,10 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
 //            }
 
             $("#fix" + i).on("click",function(){
-               var id = $(this).attr("id").replace("fix","");
-               var newhtml = $("#comp" + id + "right").html().split('<div id="semanticInputButtons">')[0];
-               var input = $("#input" + id).val();
-               var commands = input.split(";");
+                var id = $(this).attr("id").replace("fix","");
+                var newhtml = $("#comp" + id + "right").html().split('<div id="semanticInputButtons">')[0];
+                var input = $("#input" + id).val();
+                var commands = input.split(";");
                 for (var c = 0; c < commands.length;c++) {
                     var command = commands[c];
                     if(command.includes("=>")){
@@ -122,6 +122,8 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
                     }
 
                 }
+                $("#treeExample" + id).attr("src", "../img/TreeExample1.png");
+                $('#sqlExample' + id).html("SELECT DISTINCT example1, example2 FROM example.customers GROUP BY example1");
 
             });
 
@@ -133,3 +135,4 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
         $("#comp0right textarea").html("people who were not deceased=those who have not died");
     }, 1000);
 });
+
