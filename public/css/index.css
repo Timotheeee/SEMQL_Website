@@ -112,15 +112,21 @@ projects{
     margin-top: 16%;
 }
 
-#list{
+#list {
     padding: 1em;
 
     width: 90%;
     overflow-y: auto;
     margin: auto;
-
-
 }
+
+#treeExample {
+    max-width: 41%;
+    position: relative;
+    float: right;
+    height: auto;
+}
+
 .listitem span{
     margin:2px;
 }
