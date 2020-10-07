@@ -49,42 +49,24 @@ aside{
     margin-top: 1.5em;
 }
 
+.main {
+    float: left;
+    height: 90%;
+    width: 20%;
+    background: #bababa;
+    text-align: center;
+    display: inline-block;
+    position: relative;
+    margin-top: 1.5em;
+    border-radius: 1em;
+}
 
-#main1{
-    float: left;
-    height: 90%;
-    width: 30%;
-    margin-left: 5%;
-    background: #bababa;
-    text-align: center;
-    display: inline-block;
-    position: relative;
-    margin-top: 1.5em;
-    border-radius: 1em;
+#main1 {
+    margin-left: 2%;
 }
-#main2{
-    float: left;
-    height: 90%;
-    width: 30%;
-    margin-right: 0;
-    background: #bababa;
-    text-align: center;
-    display: inline-block;
-    position: relative;
-    margin-top: 1.5em;
-    border-radius: 1em;
-}
-#main3{
-    float: left;
-    height: 90%;
-    width: 30%;
-    margin-right: 0px;
-    background: #bababa;
-    text-align: center;
-    display: inline-block;
-    position: relative;
-    margin-top: 1.5em;
-    border-radius: 1em;
+
+#main5 {
+    width: 17%;
 }
 
 #about{
@@ -121,10 +103,7 @@ projects{
 }
 
 #treeExample {
-    max-width: 41%;
-    position: relative;
-    float: right;
-    height: auto;
+    max-width: 73%;
 }
 
 .listitem span{
