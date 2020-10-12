@@ -65,9 +65,6 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
         if(i===0)console.log(highlights2);
 
 
-//        human.push({text: h.trim(), highlights: highlights2, id: i,side:"left"});
-//        gen.push({text: g.trim(), highlights: highlights2, id: i,side:"right"});
-//        fixed.push({text: "", id: i,side:"fixed"});
 
         everything.push({id: i, human:{text: h.trim(), highlights: highlights2},gen:{text: g.trim(), highlights: highlights2},fixed:{text: ""}});
 
