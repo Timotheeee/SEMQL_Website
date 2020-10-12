@@ -21,9 +21,7 @@ function contains(highlights,words){
 
 $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
 
-    window.human = [];
-    window.gen = [];
-    window.fixed = [];
+    window.everything = [];
     for (var i = 0; i < dat.data.length; i++) {
         var h = dat.data[i].human;
         var g = dat.data[i].generated;
@@ -67,9 +65,12 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
         if(i===0)console.log(highlights2);
 
 
-        human.push({text: h.trim(), highlights: highlights2, id: i,side:"left"});
-        gen.push({text: g.trim(), highlights: highlights2, id: i,side:"right"});
-        fixed.push({text: "", id: i,side:"fixed"});
+//        human.push({text: h.trim(), highlights: highlights2, id: i,side:"left"});
+//        gen.push({text: g.trim(), highlights: highlights2, id: i,side:"right"});
+//        fixed.push({text: "", id: i,side:"fixed"});
+
+        everything.push({id: i, human:{text: h.trim(), highlights: highlights2},gen:{text: g.trim(), highlights: highlights2},fixed:{text: ""}});
+
         
         if(i===50)break;
 
@@ -80,22 +81,18 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
     }
 
     setTimeout(function () {
-        for (var i = 0; i < window.gen.length; i++) {
-            for (var j = 0; j < window.human[i].highlights.length; j++) {
-                var h = $("#comp" + i + "left").html().replace(window.human[i].highlights[j], "<span class='highlight" + j + "'>" + window.human[i].highlights[j] + "</span>");
-                var g = $("#comp" + i + "right").html().replace(window.gen[i].highlights[j], "<span class='highlight" + j + "'>" + window.gen[i].highlights[j] + "</span>");
+        for (var i = 0; i < window.everything.length; i++) {
+            for (var j = 0; j < window.everything[i].human.highlights.length; j++) {
+                var h = $("#humanText" + i).html().replace(window.everything[i].human.highlights[j], "<span class='highlight" + j + "'>" + window.everything[i].human.highlights[j] + "</span>");
+                var g = $("#generatedText" + i).html().replace(window.everything[i].gen.highlights[j], "<span class='highlight" + j + "'>" + window.everything[i].gen.highlights[j] + "</span>");
 
-                $("#comp" + i + "left").html(h);
-                $("#comp" + i + "right").html(g);
+                $("#humanText" + i).html(h);
+                $("#generatedText" + i).html(g);
             }
-//            if(i===1){
-//                console.log($("#comp" + i + "left").html());
-//                console.log(window.human[i].highlight);
-//            }
 
             $("#fix" + i).on("click",function(){
                 var id = $(this).attr("id").replace("fix","");
-                var newhtml = $("#comp" + id + "right").html().split('<div id="semanticInputButtons">')[0];
+                var newhtml = $("#generatedText" + id).html().split('<div id="semanticInputButtons">')[0];
                 var input = $("#input" + id).val();
                 var commands = input.split(";");
                 for (var c = 0; c < commands.length;c++) {
@@ -103,36 +100,45 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
                     if(command.includes("=>")){
                         var words = command.split("=>");
                         newhtml = newhtml.replace(" " + words[0].trim()+" ","<span class='bad'> " + words[1].trim()+"</span> ");
-                        $("#comp" + id + "fixed").html(newhtml);
+                        $("#fixedText" + id).html(newhtml);
                     } else {
                         var words = command.split("=");
                         newhtml = newhtml.replace(words[0].trim()+ "","<span class='correct'>" + words[0].trim()+ "</span> ");
                         newhtml = newhtml.replace(words[1].trim()+ "","<span class='correct'>" + words[1].trim()+ "</span> ");
-                        var left = $("#comp" + id + "left").html();
-                        var right = $("#comp" + id + "right").html();
+                        var left = $("#humanText" + id).html();
+                        var right = $("#generatedText" + id).html();
                         left = left.replace(words[0].trim()+ "","<span class='correct'>" + words[0].trim()+ "</span> ");
                         left = left.replace(words[1].trim()+ "","<span class='correct'>" + words[1].trim()+ "</span> ");
                         right = right.replace(words[0].trim()+ "","<span class='correct'>" + words[0].trim()+ "</span> ");
                         right = right.replace(words[1].trim()+ "","<span class='correct'>" + words[1].trim()+ "</span> ");
-                        $("#comp" + id + "left").html(left);
-                        $("#comp" + id + "right").html(right);
+                        $("#humanText" + id).html(left);
+                        $("#generatedText" + id).html(right);
                         
                         
-                        $("#comp" + id + "fixed").html(newhtml);
+                        $("#fixedText" + id).html(newhtml);
                     }
 
                 }
-                $("#treeExample" + id).attr("src", "../img/TreeExample1.png");
-                $('#sqlExample' + id).html("SELECT DISTINCT example1, example2 FROM example.customers GROUP BY example1");
+                //http://localhost:5000/api/sample_tree_for_question?tid=5d415bb5692f198cdabe8885
+                $.ajax({url: "http://localhost:5000/api/sample_tree_for_question?tid=5d415bb5692f198cdabe8885", method: "get"}).done(function (dat2) {
+                    console.log(dat2);
+                    //todo: fix the error then convert the json to a graph and display it
+                    //$("#treeExample" + id).html(...)
+                });
+                $("#generatedTree" + id).attr("src", "../img/TreeExample1.png");
+                $("#fixedTree" + id).attr("src", "../img/TreeExample1.png");
+                $('#humanSQL' + id).html("SELECT DISTINCT humanSQL, example2 FROM example.customers GROUP BY example1");
+                $('#generatedSQL' + id).html("SELECT DISTINCT generatedSQL, example2 FROM example.customers GROUP BY example1");
+                $('#fixedSQL' + id).html("SELECT DISTINCT fixedSQL, example2 FROM example.customers GROUP BY example1");
 
             });
 
         }
         //temporary
-        $("#comp3right textarea").html("f => male; who were nominated for oscars for their contribution to movies?=>;What are the death places of people whose gender is=Where did x die?");
-        $("#comp2right textarea").html("2607 or less?=at most 2607?");
-        $("#comp1right textarea").html("gender => name");
-        $("#comp0right textarea").html("people who were not deceased=those who have not died");
+        $("#generatedText3 textarea").html("f => male; who were nominated for oscars for their contribution to movies?=>;What are the death places of people whose gender is=Where did x die?");
+        $("#generatedText2 textarea").html("2607 or less?=at most 2607?");
+        $("#generatedText1 textarea").html("gender => name");
+        $("#generatedText0 textarea").html("people who were not deceased=those who have not died");
     }, 1000);
 });
 
