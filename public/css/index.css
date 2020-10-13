@@ -8,7 +8,7 @@
     display: block;
     color: white;
     height: 44px;
-    margin: -11px auto 0px;
+    margin: -11px auto 0;
 }
 
 #webtitle {
@@ -93,6 +93,7 @@ projects{
 #semanticInputButtons {
     position: absolute;
     top: 173px;
+    margin: auto 32% 0 32%;
 }
 
 #list {
@@ -116,8 +117,8 @@ projects{
 }
 
 #container{
-    box-sizing: unset;
-    position: relative;
+    position: absolute;
+    margin-left: 5%;
 }
 #mainContainer{
     overflow-x: hidden;
@@ -125,20 +126,24 @@ projects{
 }
 
 .comparison{
-    padding: 3px;
+    padding: 6px;
     border: 1px solid black;
     border-radius: 3px;
-    width: 90%;
+    width: auto;
     height: 10em;
-    margin: 10px 10px 29%;
-    margin-bottom: 150px;
+    margin: auto -50% 143px 50%;
     position: relative;
+}
+
+.comparisonTitle{
+    margin-left: 90%;
+    margin-right: -40%;
 }
 
 html,body{
     background-color: #bababa;
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
 }
 html{
     margin-top: -20px;

@@ -1,50 +1,42 @@
 <question>
-    <h3>Human Text</h3>
+    <h3 class="comparisonTitle">Human Text</h3>
     <div class="comparison" id="humanText{ id }">{ human.text }
         <button class="btn btn-info btn-sm" id="unclear{ id }">Unclear</button>
     </div>
 
-    <h3>Human Tree</h3>
-    <div class="comparison">
-        <div class="tree" id="humanTree{ id }"></div>
-    </div>
-
-    <h3>Generated Text</h3>
+    <h3 class="comparisonTitle">Generated Text</h3>
     <div class="comparison" id="generatedText{ id }">
         { gen.text }
         <div id="semanticInputButtons">
             <textarea class="fixinput" type="text" id="input{ id }" rows="3" placeholder="Ex: gender=>name;died=deceased"></textarea><br>
             <!-- <button id="sem{ gen.id }" class="btn btn-primary btn-sm">Semantically correct</button> → -->
-            <button id="fix{ id }" class="btn btn-secondary btn-sm">Fix it</button>
+            <button id="fix{ id }" class="btn btn-secondary btn-sm" style="margin: 0 118px 0 45%">Fix it</button>
         </div>
     </div>
-
-    <h3>Generated SQL</h3>
+    <h3 class="comparisonTitle">Generated SQL</h3>
     <div class="comparison">
         <div id="generatedSQL{ id }"></div>
     </div>
 
-    <h3>Generated Tree</h3>
+    <h3 class="comparisonTitle">Generated Tree</h3>
     <div class="comparison">
         <div class="tree" id="generatedTree{ id }"></div>
     </div>
 
-    <h3>Fixed Text</h3>
+    <h3 class="comparisonTitle">Fixed Text</h3>
     <div class="comparison" id="fixedText{ id }">
         { fixed.text }
     </div>
 
-    <h3>Fixed SQL</h3>
+    <h3 class="comparisonTitle">Fixed SQL</h3>
     <div class="comparison">
         <div id="fixedSQL{ id }"></div>
     </div>
 
-    <h3>Fixed Tree</h3>
+    <h3 class="comparisonTitle">Fixed Tree</h3>
     <div class="comparison">
         <div class="tree" id="fixedTree{ id }"></div>
     </div>
 
-
-
-    <hr style="height:5px;border-width:0;color:black;background-color:black">
+    <hr style="height:5px;border-width:0;color:black;background-color:black;margin:0 -60em 20px 0;">
 </question>
