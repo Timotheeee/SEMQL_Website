@@ -20,7 +20,7 @@ function contains(highlights,words){
 }
 
 $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
-
+    console.log(dat);
     window.everything = [];
     for (var i = 0; i < dat.data.length; i++) {
         var h = dat.data[i].human;
@@ -66,7 +66,7 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
 
 
 
-        everything.push({id: i, human:{text: h.trim(), highlights: highlights2},gen:{text: g.trim(), highlights: highlights2},fixed:{text: ""}});
+        everything.push({id: i, dbid: dat.data[i].question_id, human:{text: h.trim(), highlights: highlights2},gen:{text: g.trim(), highlights: highlights2},fixed:{text: ""}});
 
         
         if(i===50)break;
@@ -117,14 +117,18 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
 
                 }
                 //http://localhost:5000/api/sample_tree_for_question?tid=5d415bb5692f198cdabe8885
-                $.ajax({url: "http://localhost:5000/api/sample_tree_for_question?tid=5d415bb5692f198cdabe8885", method: "get"}).done(function (dat2) {
+                var dbid = window.everything[id].dbid;
+                $.ajax({url: "http://localhost:5000/api/sample_tree_for_question?tid=" + dbid, method: "get"}).done(function (dat2) {
                     console.log(dat2);
-                    //todo: fix the error then convert the json to a graph and display it
-                    //$("#treeExample" + id).html(...)
+
+                    //todo: convert the json to a graph and display it
+                    $("#humanTree" + id).html(JSON.stringify(dat2.gold_data));
+                    $("#generatedTree" + id).html(JSON.stringify(dat2.sampled_data));
+                    $("#fixedTree" + id).html("no fixed tree yet");
                 });
-                $("#generatedTree" + id).attr("src", "../img/TreeExample1.png");
-                $("#fixedTree" + id).attr("src", "../img/TreeExample1.png");
-                $('#humanSQL' + id).html("SELECT DISTINCT humanSQL, example2 FROM example.customers GROUP BY example1");
+//                $("#generatedTree" + id).attr("src", "../img/TreeExample1.png");
+//                $("#fixedTree" + id).attr("src", "../img/TreeExample1.png");
+//                $('#humanTree' + id).html("SELECT DISTINCT humanSQL, example2 FROM example.customers GROUP BY example1");
                 $('#generatedSQL' + id).html("SELECT DISTINCT generatedSQL, example2 FROM example.customers GROUP BY example1");
                 $('#fixedSQL' + id).html("SELECT DISTINCT fixedSQL, example2 FROM example.customers GROUP BY example1");
 
