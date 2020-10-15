@@ -131,7 +131,9 @@ projects{
     border-radius: 3px;
     width: auto;
     height: 10em;
-    margin: auto -50% 143px 50%;
+    margin: 10px 10px 29%;
+    margin-bottom: 150px;
+    /*    margin: auto -50% 143px 50%;*/
     position: relative;
 }
 
@@ -187,4 +189,34 @@ html{
 
 .correct{
     color:yellow;
+}
+
+
+
+
+
+
+
+
+
+
+/*graph*/
+.node {
+    cursor: pointer;
+}
+
+.node circle {
+    fill: #fff;
+    stroke: steelblue;
+    stroke-width: 3px;
+}
+
+.node text {
+    font: 12px sans-serif;
+}
+
+.link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 2px;
 }
