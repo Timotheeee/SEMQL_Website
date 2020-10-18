@@ -142,6 +142,7 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
         $("#input3").html("2607 or less?=at most 2607?");
         $("#input2").html("gender => name");
         $("#input1").html("people who were not deceased=those who have not died");
+        $("#input0").html("all movies=movies;whose name is=>produced by");
     }, 1500);
 });
 

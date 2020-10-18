@@ -149,7 +149,7 @@ function displayTree(id, data) {
 
     svg = d3.select(id).append("svg")
             .attr("width", 900)
-            .attr("height", 300)
+            .attr("height", 600)
             .append("g")
             .attr("transform", "translate(" + (-10) + "," + (30) + ")");
 

@@ -190,8 +190,10 @@ html{
 .correct{
     color:orange;
 }
-
-
+.sql{
+    max-height: 600px;
+    overflow-y: scroll;
+}
 
 
 
