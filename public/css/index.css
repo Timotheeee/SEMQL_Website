@@ -188,7 +188,7 @@ html{
 }
 
 .correct{
-    color:yellow;
+    color:orange;
 }
 
 
@@ -219,4 +219,8 @@ html{
     fill: none;
     stroke: #ccc;
     stroke-width: 2px;
+}
+
+.scrolleverything *{
+    overflow: scroll;
 }

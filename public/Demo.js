@@ -120,54 +120,28 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
                 var dbid = window.everything[id].dbid;
                 $.ajax({url: "http://localhost:5000/api/sample_tree_for_question?tid=" + dbid, method: "get"}).done(function (dat2) {
                     console.log(dat2);
-                    
-                    //temp
-                    var treeData = [
-                        {
-                          "name": "Top Level",
-                          "parent": "null",
-                          "children": [
-                            {
-                              "name": "Level 2: A",
-                              "parent": "Top Level",
-                              "children": [
-                                {
-                                  "name": "Son of A",
-                                  "parent": "Level 2: A"
-                                },
-                                {
-                                  "name": "Daughter of A",
-                                  "parent": "Level 2: A"
-                                }
-                              ]
-                            },
-                            {
-                              "name": "Level 2: B",
-                              "parent": "Top Level"
-                            }
-                          ]
-                        }
-                      ];
-
-                    displayTree("#generatedTree" + id,dat2.sampled_data);
+                   
+                    displayTree("#generatedTree" + id,dat2.sampled_data);////treeData[0]
                     //$("#humanTree" + id).html(JSON.stringify(dat2.gold_data));
                     //$("#generatedTree" + id).html(JSON.stringify(dat2.sampled_data));
                     $("#fixedTree" + id).html("no fixed tree yet");
+                    $('#generatedSQL' + id).html(dat2.sql);
+                    $('#fixedSQL' + id).html(dat2.sql);
                 });
 //                $("#generatedTree" + id).attr("src", "../img/TreeExample1.png");
 //                $("#fixedTree" + id).attr("src", "../img/TreeExample1.png");
 //                $('#humanTree' + id).html("SELECT DISTINCT humanSQL, example2 FROM example.customers GROUP BY example1");
-                $('#generatedSQL' + id).html("SELECT DISTINCT generatedSQL, example2 FROM example.customers GROUP BY example1");
-                $('#fixedSQL' + id).html("SELECT DISTINCT fixedSQL, example2 FROM example.customers GROUP BY example1");
+
+
 
             });
 
         }
         //temporary
-        $("#generatedText3 textarea").html("f => male; who were nominated for oscars for their contribution to movies?=>;What are the death places of people whose gender is=Where did x die?");
-        $("#generatedText2 textarea").html("2607 or less?=at most 2607?");
-        $("#generatedText1 textarea").html("gender => name");
-        $("#generatedText0 textarea").html("people who were not deceased=those who have not died");
-    }, 3000);
+        $("#input4").html("f => male; who were nominated for oscars for their contribution to movies?=>;What are the death places of people whose gender is=Where did x die?");
+        $("#input3").html("2607 or less?=at most 2607?");
+        $("#input2").html("gender => name");
+        $("#input1").html("people who were not deceased=those who have not died");
+    }, 1500);
 });
 

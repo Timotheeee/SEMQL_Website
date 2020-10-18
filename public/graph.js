@@ -11,7 +11,7 @@ var tree = d3.layout.tree()
 
 var diagonal = d3.svg.diagonal()
         .projection(function (d) {
-            return [d.y, d.x];
+            return [d.x, d.y];
         });
 
 var svg;
@@ -26,7 +26,7 @@ function update(source) {
 
     // Normalize for fixed-depth.
     nodes.forEach(function (d) {
-        d.y = d.depth * 180;
+        d.y = d.depth * 60;
     });
 
     // Update the nodes…
@@ -39,7 +39,7 @@ function update(source) {
     var nodeEnter = node.enter().append("g")
             .attr("class", "node")
             .attr("transform", function (d) {
-                return "translate(" + source.y0 + "," + source.x0 + ")";
+                return "translate(" + (source.y0) + "," + (source.x0) + ")";
             });
     //.on("click", click);
 
@@ -51,11 +51,11 @@ function update(source) {
 
     nodeEnter.append("text")
             .attr("x", function (d) {
-                return d.children || d._children ? -13 : 13;
+                return d.children || d._children ? -13 : -13;
             })
             .attr("dy", ".35em")
             .attr("text-anchor", function (d) {
-                return d.children || d._children ? "end" : "start";
+                return d.children || d._children ? "end" : "end";
             })
             .text(function (d) {
                 return d.name;
@@ -66,7 +66,7 @@ function update(source) {
     var nodeUpdate = node.transition()
             .duration(duration)
             .attr("transform", function (d) {
-                return "translate(" + d.y + "," + d.x + ")";
+                return "translate(" + (d.x) + "," + (d.y) + ")";
             });
 
     nodeUpdate.select("circle")
@@ -129,13 +129,31 @@ function update(source) {
 
 
 function displayTree(id, data) {
+    console.log(data);
+    data.parent = "null";
+    var parentname = data.name;
+    var current = data.children[0];
+    while (true) {
+        console.log("loop");
+        if (current && current.children) {
+            var end = current.attributes.attribute_name ? current.attributes.attribute_name : current.attributes.table_name;
+            current.parent = parentname;
+            current.name = current.name.replace(/\(.+\)/,"") + ": " + end;
+            current = current.children[0];
+        } else {
+            break;
+        }
+    }
+    console.log(data);
+
+
     svg = d3.select(id).append("svg")
             .attr("width", 900)
             .attr("height", 300)
             .append("g")
-            .attr("transform", "translate(" + (120) + "," + (-100) + ")");
+            .attr("transform", "translate(" + (-10) + "," + (30) + ")");
 
-    root = data[0];
+    root = data;
     root.x0 = height / 2;
     root.y0 = 0;
 
