@@ -127,23 +127,43 @@ function update(source) {
     });
 }
 
+function fix(node, parent) {
+    if (node.children[0])
+        fix(node.children[0], node.name);
+    if (node.children[1])
+        fix(node.children[1], node.name);
+    
+    var end = node.attributes.attribute_name ? node.attributes.attribute_name : node.attributes.table_name;
+    if (node.attributes.attribute_name0) {
+        end = node.attributes.attribute_name0;// + " and \n" + node.attributes.attribute_name1;
+    }
+    node.parent = parent;
+    node.name = node.name.replace(/\(.+\)/, "") + ": " + end;
+    if(node.name.length>25&&node.name.includes("Merge"))node.name = "Merge: " + node.name.split(".")[1];
+}
+
 
 function displayTree(id, data) {
     console.log(data);
-    data.parent = "null";
-    var parentname = data.name;
-    var current = data.children[0];
-    while (true) {
-        console.log("loop");
-        if (current && current.children) {
-            var end = current.attributes.attribute_name ? current.attributes.attribute_name : current.attributes.table_name;
-            current.parent = parentname;
-            current.name = current.name.replace(/\(.+\)/,"") + ": " + end;
-            current = current.children[0];
-        } else {
-            break;
-        }
-    }
+//    data.parent = "null";
+//    var parentname = data.name;
+//    var current = data.children[0];
+    fix(data,"null");
+//    while (true) {
+//        console.log("loop");
+//        if (current && current.children) {
+//            //also attribute_name0 attribute_name1
+//            var end = current.attributes.attribute_name ? current.attributes.attribute_name : current.attributes.table_name;
+//            if (current.attributes.attribute_name0) {
+//                end = current.attributes.attribute_name0;// + " and \n" + current.attributes.attribute_name1;
+//            }
+//            current.parent = parentname;
+//            current.name = current.name.replace(/\(.+\)/, "") + ": " + end;
+//            current = current.children[0];
+//        } else {
+//            break;
+//        }
+//    }
     console.log(data);
 
 
