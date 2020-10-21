@@ -11,7 +11,7 @@
                     </p>
                      <div class="d-flex justify-content-between align-items-center">
                          <button class="btn btn-info btn-sm" id="unclear{ id }">Unclear</button>
-                         <button id="load{ id }" class="btn btn-secondary btn-sm">Load</button>
+                         <button id="load{ id }" class="btn btn-secondary btn-sm" onclick="load({ id })">Load</button>
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                     <div id="d-flex justify-content-between align-items-center">
                         <textarea class="fixinput" type="text" id="input{ id }" rows="3" placeholder="Ex: gender=>name;died=deceased"></textarea><br>
                            <!-- <button id="sem{ gen.id }" class="btn btn-primary btn-sm">Semantically correct</button> → -->
-                        <button id="fix{ id }" class="btn btn-secondary btn-sm" style="margin: 0 118px 0 45%">Fix it</button>
+                        <button id="fix{ id }" class="btn btn-secondary btn-sm" onclick="fixit({ id })" style="margin: 0 118px 0 45%">Fix it</button>
                     </div>
             </div>
 
