@@ -38,10 +38,11 @@ function update(source) {
     // Enter any new nodes at the parent's previous position.
     var nodeEnter = node.enter().append("g")
             .attr("class", "node")
+            .attr("questionID", questionID)
             .attr("transform", function (d) {
                 return "translate(" + (source.y0) + "," + (source.x0) + ")";
-            });
-    //.on("click", click);
+            })
+            .on("click", click);
 
     nodeEnter.append("circle")
             .attr("r", 1e-6)
@@ -125,6 +126,84 @@ function update(source) {
         d.x0 = d.x;
         d.y0 = d.y;
     });
+
+
+}
+
+function click(d) {
+    //console.log(d);
+    var action = d.name.split(":")[0];
+    var text = convert(action);
+    var text2 = "";
+    if (d.name.split(":").length > 1) {
+        var part2 = d.name.split(":")[1].trim();
+        if (part2.includes(".")) {
+            text2 += part2.split(".")[0] + " " + part2.split(".")[1];
+        }
+        if (part2.includes("_")) {
+            text2 += part2.split("_")[0] + " " + part2.split("_")[1];
+        }
+    }
+
+
+
+    highlight(text, text2, d.questionID);
+}
+
+function convert(action) {
+    switch (action) {
+        case "Sum":
+            return "What is the total $attr of all $sub?";
+        case "Average":
+            return "What is the average $attr of all $sub?";
+        case "Done":
+            return "What are the $child?";
+        case "IsEmpty":
+            return "Are there any $child?";
+        case "Count":
+            return "How many $child are there?";
+        case "Min":
+            return "$sub with minimum $attr";
+        case "Max":
+            return "$sub with maximum $attr";
+
+        default:
+            return action;
+
+    }
+
+
+
+}
+
+function highlight(text, part2, id) {
+    var words = text.split(" ");
+    for (var i = 0; i < words.length; i++) {
+        if (words[i] === "" || words[i] === " " || words[i] === undefined)
+            continue;
+        console.log("highlighting " + words[i]);
+        $("#generatedText" + id).highlight(words[i]);
+        setTimeout(function () {
+            $("#generatedText" + id).unhighlight(words[i]);
+        }, 5000);
+    }
+    words = part2.split(" ");
+    for (var i = 0; i < words.length; i++) {
+        if (words[i] === "" || words[i] === " " || words[i] === undefined)
+            continue;
+        console.log("highlighting " + words[i]);
+
+        $("#generatedText" + id).highlight(words[i]);
+        $("#generatedText" + id).highlight(words[i] + "s");
+        $("#generatedText" + id).highlight(words[i].replace("y", "ies"));
+
+        setTimeout(function () {
+            $("#generatedText" + id).unhighlight(words[i].replace("y", "ies"));
+            $("#generatedText" + id).unhighlight(words[i] + "s");
+            $("#generatedText" + id).unhighlight(words[i]);
+        }, 2000);
+    }
+
 }
 
 function fix(node, parent) {
@@ -132,23 +211,29 @@ function fix(node, parent) {
         fix(node.children[0], node.name);
     if (node.children[1])
         fix(node.children[1], node.name);
-    
+
     var end = node.attributes.attribute_name ? node.attributes.attribute_name : node.attributes.table_name;
     if (node.attributes.attribute_name0) {
         end = node.attributes.attribute_name0;// + " and \n" + node.attributes.attribute_name1;
     }
     node.parent = parent;
     node.name = node.name.replace(/\(.+\)/, "") + ": " + end;
-    if(node.name.length>25&&node.name.includes("Merge"))node.name = "Merge: " + node.name.split(".")[1];
+    if (node.name === "Done: undefined")
+        node.name = "Done";
+    node.questionID = questionID;
+    if (node.name.length > 25 && node.name.includes("Merge"))
+        node.name = "Merge: " + node.name.split(".")[1];
 }
 
+var questionID;
 
 function displayTree(id, data) {
     console.log(data);
+    questionID = id.replace("#generatedTree", "");
 //    data.parent = "null";
 //    var parentname = data.name;
 //    var current = data.children[0];
-    fix(data,"null");
+    fix(data, "null");
 //    while (true) {
 //        console.log("loop");
 //        if (current && current.children) {

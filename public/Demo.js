@@ -104,14 +104,15 @@ function load(id){
     var dbid = window.everything[id].dbid;
     console.log(dbid);
     $.ajax({url: "http://localhost:5004/api/sample_tree_for_question?tid=" + dbid, method: "get"}).done(function (dat2) {
+        console.log("THE DATA:");
         console.log(dat2);
         console.log("load id 2 is now: " + id);
         displayTree("#generatedTree" + id,dat2.sampled_data);
         $("#fixedTree" + id).html("no fixed tree yet");
         $('#generatedSQL' + id).html(dat2.sql);
         $('#fixedSQL' + id).html("no fixed SQL yet");
-        console.log("generatedText: " + '#generatedText' + id);
-        $('#generatedText' + id).html(dat2.synthetic_question);
+        console.log("adding syn question to generatedtext: " + '#generatedText' + id + ", " + (dat2.synthetic_question ? dat2.synthetic_question : dat2.gold_synthetic_question));
+        $('#generatedText' + id).html(dat2.synthetic_question ? dat2.synthetic_question : dat2.gold_synthetic_question);
         console.log("running compare with " + id);
         compareTexts(id);
     });
