@@ -2,26 +2,26 @@
 
 
 
-function compare(a,b){
-    if(a === undefined || b === undefined)return false;
+function compare(a, b) {
+    if (a === undefined || b === undefined) return false;
     a = a.replace(/[^\w\s]/gi, '').toLowerCase();
     b = b.replace(/[^\w\s]/gi, '').toLowerCase();
-    return a===b;
+    return a === b;
 }
 
-function contains(highlights,words){
+function contains(highlights, words) {
     for (var i = 0; i < highlights.length; i++) {
         //console.log("comparing: " + highlights[i].trim() + ", " + words.trim());
-        if(highlights[i].trim().includes(words.trim())){
+        if (highlights[i].trim().includes(words.trim())) {
             //console.log("returning true");
             return true;
         }
-            
+
     }
     return false;
 }
 
-function compareTexts(i){
+function compareTexts(i) {
     console.log(i);
     console.log(window.dat.data[i]);
     var h = window.dat.data[i].human;
@@ -31,24 +31,24 @@ function compareTexts(i){
     var highlights = [];
 
     for (var i3 = 0; i3 < hs.length; i3++) {
-        if(i===0)console.log("hs[i3] is " + hs[i3]);
+        if (i === 0) console.log("hs[i3] is " + hs[i3]);
         var words = "";
         var i2 = i3;
         var found = false;
         for (var j = 0; j < gs.length; j++) {//for every human word check how many generated words match in a row
-            if(i===0)console.log("hs[i2] is " + hs[i2] + ", gs[j] is " + gs[j]);
-            if (compare(gs[j],hs[i2])) {
+            if (i === 0) console.log("hs[i2] is " + hs[i2] + ", gs[j] is " + gs[j]);
+            if (compare(gs[j], hs[i2])) {
                 words += gs[j] + " ";
-                found=true;
+                found = true;
             } else {
-                if(i===0 && !contains(highlights,words))console.log("pushing words: " + words);
-                if(words.trim().split(" ").length>1 && !contains(highlights,words))highlights.push(words);
-                if(found)break;
+                if (i === 0 && !contains(highlights, words)) console.log("pushing words: " + words);
+                if (words.trim().split(" ").length > 1 && !contains(highlights, words)) highlights.push(words);
+                if (found) break;
             }
-            if(found)i2++;
+            if (found) i2++;
         }
-        if(i===0)console.log("pushing words: " + words);
-        if(words.trim().split(" ").length>1  && !contains(highlights,words))highlights.push(words);
+        if (i === 0) console.log("pushing words: " + words);
+        if (words.trim().split(" ").length > 1 && !contains(highlights, words)) highlights.push(words);
 
     }
 
@@ -59,11 +59,11 @@ function compareTexts(i){
     }
 
     var highlights2 = [];
-    $.each(highlights, function(i, el){
-        if($.inArray(el, highlights2) === -1) highlights2.push(el);
+    $.each(highlights, function (i, el) {
+        if ($.inArray(el, highlights2) === -1) highlights2.push(el);
     });
 
-    if(i===0)console.log(highlights2);
+    if (i === 0) console.log(highlights2);
 
     for (var j = 0; j < highlights2.length; j++) {
         var h = $("#humanText" + i).html().replace(highlights2[j], "<span class='highlight" + j + "'>" + highlights2[j] + "</span>");
@@ -80,7 +80,7 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
     window.everything = [];
     window.dat = dat;
     for (var i = 0; i < dat.data.length; i++) {
-        everything.push({id: i, dbid: dat.data[i].question_id, human:{text: dat.data[i].human.trim()}});
+        everything.push({id: i, dbid: dat.data[i].question_id, human: {text: dat.data[i].human.trim()}});
         //if(i===50)break;
     }
 
@@ -90,60 +90,78 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
 
     setTimeout(function () {
         //temporary
-        $("#input4").html("f => male; who were nominated for oscars for their contribution to movies?=>;What are the death places of people whose gender is=Where did x die?");
-        $("#input3").html("2607 or less?=at most 2607?");
-        $("#input2").html("gender => name");
-        $("#input1").html("people who were not deceased=those who have not died");
-        $("#input0").html("all movies=movies;which were produced by companies whose name is=>produced by");
-    }, 5000);
+        $("#input5").html("f => male; who were nominated for oscars for their contribution to movies?=>;What are the death places of people whose gender is=Where did x die?");
+        $("#input4").html("2607 or less?=at most 2607?");
+        $("#input3").html("gender => name");
+        $("#input2").html("people who were not deceased=those who have not died");
+        $("#input1").html("all movies=movies;which were produced by companies whose name is=>produced by");
+    }, 4000);
 });
 
-function load(id){
+function load(id) {
     console.log("load");
     console.log(id);
-    var dbid = window.everything[id].dbid;
-    console.log(dbid);
-    $.ajax({url: "http://localhost:5004/api/sample_tree_for_question?tid=" + dbid, method: "get"}).done(function (dat2) {
-        console.log("THE DATA:");
-        console.log(dat2);
-        console.log("load id 2 is now: " + id);
-        displayTree("#generatedTree" + id,dat2.sampled_data);
-        $("#fixedTree" + id).html("no fixed tree yet");
-        $('#generatedSQL' + id).html(dat2.sql);
-        $('#fixedSQL' + id).html("no fixed SQL yet");
-        console.log("adding syn question to generatedtext: " + '#generatedText' + id + ", " + (dat2.synthetic_question ? dat2.synthetic_question : dat2.gold_synthetic_question));
-        $('#generatedText' + id).html(dat2.synthetic_question ? dat2.synthetic_question : dat2.gold_synthetic_question);
-        console.log("running compare with " + id);
+    if (id === 0) {
+        var text = $("#humanText0").html();
+        //todo implement this on the backend
+//        $.ajax({url: "http://localhost:5004/api/getStuff?text=" + text, method: "get"}).done(function (dat2) {
+//            console.log("THE DATA:");
+//            console.log(dat2);
+//        });
+        $("#generatedText0").html(text);
         compareTexts(id);
-    });
+    } else {
+        var dbid = window.everything[id].dbid;
+        console.log(dbid);
+        $.ajax({url: "http://localhost:5004/api/sample_tree_for_question?tid=" + dbid, method: "get"}).done(function (dat2) {
+            console.log("THE DATA:");
+            console.log(dat2);
+            console.log("load id 2 is now: " + id);
+            displayTree("#generatedTree" + id, dat2.sampled_data);
+            $("#fixedTree" + id).html("no fixed tree yet");
+            $('#generatedSQL' + id).html(dat2.sql);
+            $('#fixedSQL' + id).html("no fixed SQL yet");
+            console.log("adding syn question to generatedtext: " + '#generatedText' + id + ", " + (dat2.synthetic_question ? dat2.synthetic_question : dat2.gold_synthetic_question));
+            $('#generatedText' + id).html(dat2.synthetic_question ? dat2.synthetic_question : dat2.gold_synthetic_question);
+            console.log("running compare with " + id);
+            compareTexts(id);
+        });
+    }
+
+
+
 }
 
-function fixit(id){
+function fixit(id) {
     console.log("RUNNING FIX " + id);
-    var newhtml = $("#generatedText" + id).html().split('<div id="semanticInputButtons">')[0];
-    var input = $("#input" + id).val();
-    var commands = input.split(";");
-    for (var c = 0; c < commands.length;c++) {
-        var command = commands[c];
-        if(command.includes("=>")){
-            var words = command.split("=>");
-            newhtml = newhtml.replace(" " + words[0].trim()+" ","<span class='bad'> " + words[1].trim()+"</span> ");
-            $("#fixedText" + id).html(newhtml);
-        } else {
-            var words = command.split("=");
-            newhtml = newhtml.replace(words[0].trim()+ "","<span class='correct'>" + words[0].trim()+ "</span> ");
-            newhtml = newhtml.replace(words[1].trim()+ "","<span class='correct'>" + words[1].trim()+ "</span> ");
-            var left = $("#humanText" + id).html();
-            var right = $("#generatedText" + id).html();
-            left = left.replace(words[0].trim()+ "","<span class='correct'>" + words[0].trim()+ "</span> ");
-            left = left.replace(words[1].trim()+ "","<span class='correct'>" + words[1].trim()+ "</span> ");
-            right = right.replace(words[0].trim()+ "","<span class='correct'>" + words[0].trim()+ "</span> ");
-            right = right.replace(words[1].trim()+ "","<span class='correct'>" + words[1].trim()+ "</span> ");
-            $("#humanText" + id).html(left);
-            $("#generatedText" + id).html(right);
+    if (id === 0) {
+        $("#humanText0").html($("#generatedText0").html());
+    } else {
+        var newhtml = $("#generatedText" + id).html().split('<div id="semanticInputButtons">')[0];
+        var input = $("#input" + id).val();
+        var commands = input.split(";");
+        for (var c = 0; c < commands.length; c++) {
+            var command = commands[c];
+            if (command.includes("=>")) {
+                var words = command.split("=>");
+                newhtml = newhtml.replace(" " + words[0].trim() + " ", "<span class='bad'> " + words[1].trim() + "</span> ");
+                $("#fixedText" + id).html(newhtml);
+            } else {
+                var words = command.split("=");
+                newhtml = newhtml.replace(words[0].trim() + "", "<span class='correct'>" + words[0].trim() + "</span> ");
+                newhtml = newhtml.replace(words[1].trim() + "", "<span class='correct'>" + words[1].trim() + "</span> ");
+                var left = $("#humanText" + id).html();
+                var right = $("#generatedText" + id).html();
+                left = left.replace(words[0].trim() + "", "<span class='correct'>" + words[0].trim() + "</span> ");
+                left = left.replace(words[1].trim() + "", "<span class='correct'>" + words[1].trim() + "</span> ");
+                right = right.replace(words[0].trim() + "", "<span class='correct'>" + words[0].trim() + "</span> ");
+                right = right.replace(words[1].trim() + "", "<span class='correct'>" + words[1].trim() + "</span> ");
+                $("#humanText" + id).html(left);
+                $("#generatedText" + id).html(right);
 
 
-            $("#fixedText" + id).html(newhtml);
+                $("#fixedText" + id).html(newhtml);
+            }
         }
     }
 }

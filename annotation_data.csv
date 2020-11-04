@@ -1,4 +1,5 @@
 question_id,human,generated,note on disagreement,complexity,complexity_class,str_eq,res_eq,res_eq_corrected,nubia,nubia_pred,mt1,mt2,mt3,mt_majority,mt_strict,eq_majority,eq_strict,eq_nubia,,,,,,,,,,
+custom,"Custom question","",,,4,hard,0,0,0,0.805143541,1,0,0,0,0,0,1,1,0,,,,,,,,,
 5d92ea50b858765a1aa61774,What is the total revenue of movies produced by Spooky Tooth Productions?,What is the total revenue of all movies whose name is Spooky Tooth Productions?,,4,hard,0,0,0,0.805143541,1,0,0,0,0,0,1,1,0,,,,,,,,,,
 5da5e2a75aaa6bd58ddcb61d,"What are the names of those who have not died in Brighton, England?","What are the names of people who were not deceased in Brighton, England?",,1.5,easy,1,1,1,0.964263387,1,1,1,1,1,1,1,1,1,,,,,,,,,,
 5d931151b858765a1aa61779,What is gender of Mark Tallman?,What are the genders of people whose gender is Mark Tallman?,,1.5,easy,0,0,0,0.970385973,1,0,0,0,0,0,1,1,0,,,,,,,,,,
