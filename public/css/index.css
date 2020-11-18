@@ -198,8 +198,12 @@ html{
     max-height: 600px;
     overflow-y: scroll;
 }
-
-
+#generatedText0{
+    color: green;
+}
+sum,filter,extractvalues,done,isempty,min,max,average,count{
+    color: black;
+}
 
 
 

@@ -24,19 +24,19 @@ function contains(highlights, words) {
 function compareTexts(i) {
     console.log(i);
     console.log(window.dat.data[i]);
-    var h = window.dat.data[i].human;
-    var g = window.dat.data[i].generated;
+    var h = $("#humanText" + i).html();
+    var g = $("#generatedText" + i).html();
     var hs = h.split(" ");//human sentences split by space
     var gs = g.split(" ");
     var highlights = [];
 
     for (var i3 = 0; i3 < hs.length; i3++) {
-        if (i === 0) console.log("hs[i3] is " + hs[i3]);
+        //if (i === 0) console.log("hs[i3] is " + hs[i3]);
         var words = "";
         var i2 = i3;
         var found = false;
         for (var j = 0; j < gs.length; j++) {//for every human word check how many generated words match in a row
-            if (i === 0) console.log("hs[i2] is " + hs[i2] + ", gs[j] is " + gs[j]);
+            //if (i === 0) console.log("hs[i2] is " + hs[i2] + ", gs[j] is " + gs[j]);
             if (compare(gs[j], hs[i2])) {
                 words += gs[j] + " ";
                 found = true;
@@ -47,7 +47,7 @@ function compareTexts(i) {
             }
             if (found) i2++;
         }
-        if (i === 0) console.log("pushing words: " + words);
+        //if (i === 0) console.log("pushing words: " + words);
         if (words.trim().split(" ").length > 1 && !contains(highlights, words)) highlights.push(words);
 
     }
@@ -76,7 +76,7 @@ function compareTexts(i) {
 
 
 $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
-    console.log(dat);
+    //console.log(dat);
     window.everything = [];
     window.dat = dat;
     for (var i = 0; i < dat.data.length; i++) {
@@ -88,28 +88,63 @@ $.ajax({url: "/api/data/", method: "get"}).done(function (dat) {
         window.home.update();
     }
 
+//    setTimeout(function () {
+//        //temporary
+//        $("#input5").html("f => male; who were nominated for oscars for their contribution to movies?=>;What are the death places of people whose gender is=Where did x die?");
+//        $("#input4").html("2607 or less?=at most 2607?");
+//        $("#input3").html("gender => name");
+//        $("#input2").html("people who were not deceased=those who have not died");
+//        $("#input1").html("all movies=movies;which were produced by companies whose name is=>produced by");
+//    }, 4000);
+});
+
+$("html").on("click", "#generatedText0 *", function () {
+    var type = this.outerHTML.split(">")[0].replace("<", "").split(" ")[0];
+    //console.log(type);
+    //$("." + type).addClass("highlight");
+    $("text." + type).append(" (this one)");
     setTimeout(function () {
-        //temporary
-        $("#input5").html("f => male; who were nominated for oscars for their contribution to movies?=>;What are the death places of people whose gender is=Where did x die?");
-        $("#input4").html("2607 or less?=at most 2607?");
-        $("#input3").html("gender => name");
-        $("#input2").html("people who were not deceased=those who have not died");
-        $("#input1").html("all movies=movies;which were produced by companies whose name is=>produced by");
-    }, 4000);
+        //$("." + type).removeClass("highlight");
+        if ($("text." + type).html() !== undefined && $("text." + type).html().includes("this one"))
+            $("text." + type).html($("text." + type).html().replace(" (this one)", ""));
+    }, 3000);
 });
 
 function load(id) {
     console.log("load");
     console.log(id);
-    if (id === 0) {
-        var text = $("#humanText0").html();
-        //todo implement this on the backend
-//        $.ajax({url: "http://localhost:5004/api/getStuff?text=" + text, method: "get"}).done(function (dat2) {
-//            console.log("THE DATA:");
-//            console.log(dat2);
-//        });
-        $("#generatedText0").html(text);
-        compareTexts(id);
+    if (id === 0 || id === 1) {
+        var text = $("#humanText" + id).html();
+        console.log(text);
+
+
+
+        $("#select0").html($("#select0 option:selected").text().replace("_", " "));
+        $("#select1").html($("#select1 option:selected").text().replace("_", " "));
+        $("#select2").html($("#select2 option:selected").text().replace("_", " "));
+        $("#select3").html($("#select4 option:selected").text().replace("_", " "));
+
+        //text = text.replace(/<sele.*<\/select>/,select);
+        text = $("#humanText" + id).text();
+        console.log(text);
+
+
+        $.ajax({url: "http://localhost:5004/api/text_to_tree?text=" + text.replace(" ", "_"), method: "get"}).done(function (dat2) {
+            console.log("THE DATA (" + id + ")" + ":");
+            console.log(dat2);
+            displayTree("#generatedTree" + id, dat2.sampled_data);
+            //$("#fixedTree" + id).html("no fixed tree yet");
+            $('#generatedSQL' + id).html(dat2.sql);
+            //$('#fixedSQL' + id).html("no fixed SQL yet");
+            //console.log("adding syn question to generatedtext: " + '#generatedText' + id + ", " + (dat2.synthetic_question ? dat2.synthetic_question : dat2.gold_synthetic_question));
+            $('#generatedText' + id).html(dat2.synthetic_question === "" ? "error on the backend" : dat2.synthetic_question);
+            //console.log("running compare with " + id);
+            //compareTexts(id);
+
+
+
+        });
+        //compareTexts(id);
     } else {
         var dbid = window.everything[id].dbid;
         console.log(dbid);
@@ -117,6 +152,7 @@ function load(id) {
             console.log("THE DATA:");
             console.log(dat2);
             console.log("load id 2 is now: " + id);
+            $("#generatedTree" + id).html("");
             displayTree("#generatedTree" + id, dat2.sampled_data);
             $("#fixedTree" + id).html("no fixed tree yet");
             $('#generatedSQL' + id).html(dat2.sql);
@@ -132,10 +168,46 @@ function load(id) {
 
 }
 
+var attributes;
+$.getJSON("attributes_for_table.json", function (json) {
+    attributes = json;
+    console.log("loaded");
+});
+
+function genSelect(table) {
+    var fields = attributes[table];
+
+    var select = "<select name='" + table + "'>";
+    for (var i = 0; i < fields.length; i++) {
+        var cur = fields[i][0];
+        if (cur === "id") continue;
+        select += "<option value='" + cur + "'>" + cur + "</option>\n";
+    }
+    select += "</select>";
+    return select;
+}
+
 function fixit(id) {
     console.log("RUNNING FIX " + id);
-    if (id === 0) {
-        $("#humanText0").html($("#generatedText0").html());
+    if (id === 0) {// || id === 1
+
+        setTimeout(function () {
+            var gen = $("#generatedText" + 0).html();
+            var attr_el_array = $("#generatedText" + 0 + " attr");
+            for (var i = 0; i < attr_el_array.length; i++) {
+                var attr_el = $(attr_el_array[i]);
+                var attr = attr_el.attr('table');
+                var select = genSelect(attr);
+                gen = gen.replace(/<attr[^<]+<\/attr>/, "<div id='select" + i + "'>" + select + "</div>");
+            }
+            $("#humanText" + 0).html(gen);
+        }, 1);
+
+
+//        gen = gen.replace(/<attr>[^<]+<\/attr>/, "<div id='select" + id + "1'>" + select + "</div>");
+//        gen = gen.replace(/<attr>[^<]+<\/attr>/, "<div id='select" + id + "2'>" + select + "</div>");
+
+
     } else {
         var newhtml = $("#generatedText" + id).html().split('<div id="semanticInputButtons">')[0];
         var input = $("#input" + id).val();

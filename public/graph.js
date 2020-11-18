@@ -13,9 +13,9 @@ var diagonal = d3.svg.diagonal()
         .projection(function (d) {
             return [d.x, d.y];
         });
-
 var svg;
 
+window.test = "a";
 
 
 function update(source) {
@@ -42,6 +42,9 @@ function update(source) {
             .attr("transform", function (d) {
                 return "translate(" + (source.y0) + "," + (source.x0) + ")";
             })
+//            .attr("class", function (d) {
+//                return "node " + d.action.toLowerCase();
+//            })
             .on("click", click);
 
     nodeEnter.append("circle")
@@ -58,6 +61,12 @@ function update(source) {
             .attr("text-anchor", function (d) {
                 return d.children || d._children ? "end" : "end";
             })
+            .attr("class", function (d) {
+                return d.action.toLowerCase() + "";//highlight//window.test === "a" ? d.action.toLowerCase() : "zzz";
+            })
+//            .text(function (d) {
+//                return "<span class='" + d.action.toLowerCase() + "'>" + d.name + "</span>";
+//            })
             .text(function (d) {
                 return d.name;
             })
@@ -73,7 +82,8 @@ function update(source) {
     nodeUpdate.select("circle")
             .attr("r", 10)
             .style("fill", function (d) {
-                return d._children ? "lightsteelblue" : "#fff";
+                var a = d.action;
+                return (a === "Distinct" || a === "Merge" || a === "GetData") ? "red" : "lightsteelblue";
             });
 
     nodeUpdate.select("text")
@@ -133,76 +143,89 @@ function update(source) {
 function click(d) {
     //console.log(d);
     var action = d.name.split(":")[0];
-    var text = convert(action);
+    var text = action;//convert(action);
     var text2 = "";
     if (d.name.split(":").length > 1) {
         var part2 = d.name.split(":")[1].trim();
         if (part2.includes(".")) {
             text2 += part2.split(".")[0] + " " + part2.split(".")[1];
-        }
-        if (part2.includes("_")) {
+        } else if (part2.includes("_")) {
             text2 += part2.split("_")[0] + " " + part2.split("_")[1];
+        } else {
+            text2 += part2;
         }
     }
-
+    text2 = text2.replace("_", " ");
 
 
     highlight(text, text2, d.questionID);
 }
 
-function convert(action) {
-    switch (action) {
-        case "Sum":
-            return "What is the total $attr of all $sub?";
-        case "Average":
-            return "What is the average $attr of all $sub?";
-        case "Done":
-            return "What are the $child?";
-        case "IsEmpty":
-            return "Are there any $child?";
-        case "Count":
-            return "How many $child are there?";
-        case "Min":
-            return "$sub with minimum $attr";
-        case "Max":
-            return "$sub with maximum $attr";
+//function convert(action) {
+//    switch (action) {
+//        case "Sum":
+//            return "What is the total $attr of all $sub?";
+//        case "Average":
+//            return "What is the average $attr of all $sub?";
+//        case "Done":
+//            return "What are the $child?";
+//        case "IsEmpty":
+//            return "Are there any $child?";
+//        case "Count":
+//            return "How many $child are there?";
+//        case "Min":
+//            return "$sub with minimum $attr";
+//        case "Max":
+//            return "$sub with maximum $attr";
+//        case "Filter":
+//            return "whose name is not";
+//
+//        default:
+//            return action;
+//
+//    }
+//}
 
-        default:
-            return action;
+function highlight(action, part2, id) {
 
-    }
-
-
-
-}
-
-function highlight(text, part2, id) {
-    var words = text.split(" ");
-    for (var i = 0; i < words.length; i++) {
-        if (words[i] === "" || words[i] === " " || words[i] === undefined)
-            continue;
-        console.log("highlighting " + words[i]);
-        $("#generatedText" + id).highlight(words[i]);
-        setTimeout(function () {
-            $("#generatedText" + id).unhighlight(words[i]);
-        }, 5000);
-    }
-    words = part2.split(" ");
-    for (var i = 0; i < words.length; i++) {
-        if (words[i] === "" || words[i] === " " || words[i] === undefined)
-            continue;
-        console.log("highlighting " + words[i]);
-
-        $("#generatedText" + id).highlight(words[i]);
-        $("#generatedText" + id).highlight(words[i] + "s");
-        $("#generatedText" + id).highlight(words[i].replace("y", "ies"));
-
-        setTimeout(function () {
-            $("#generatedText" + id).unhighlight(words[i].replace("y", "ies"));
-            $("#generatedText" + id).unhighlight(words[i] + "s");
-            $("#generatedText" + id).unhighlight(words[i]);
-        }, 2000);
-    }
+    console.log(action + ", " + part2 + ", " + id);
+    action = action.toLowerCase();
+    $(action).addClass("highlight");
+    setTimeout(function () {
+        $(action).removeClass("highlight");
+    }, 3000);
+//    var words = text.split(" ");
+//    for (var i = 0; i < words.length; i++) {
+//        if (words[i] === "" || words[i] === " " || words[i] === undefined)
+//            continue;
+//        console.log("highlighting " + words[i]);
+//        $("#generatedText" + id).highlight(words[i]);
+//        setTimeout(function () {
+//            $("#generatedText" + id).unhighlight(words[i]);
+//        }, 5000);
+//    }
+//    words = part2.split(" ");
+//    for (var i = 0; i < words.length; i++) {
+//        if (words[i] === "" || words[i] === " " || words[i] === undefined)
+//            continue;
+//        console.log("highlighting " + words[i]);
+//
+//        $("#generatedText" + id).highlight(words[i]);
+//        $("#generatedText" + id).highlight(words[i] + "s");
+//        $("#generatedText" + id).highlight(words[i].replace("y", "ies"));
+//        $("#generatedText" + id).highlight(words[i].replace("people", "person"));
+//        $("#generatedText" + id).highlight(words[i].replace("person", "people"));
+//
+//        setTimeout(function () {
+//            if (words[i] !== undefined) {
+//                $("#generatedText" + id).unhighlight(words[i].replace("y", "ies"));
+//                $("#generatedText" + id).unhighlight(words[i] + "s");
+//                $("#generatedText" + id).unhighlight(words[i]);
+//                $("#generatedText" + id).unhighlight(words[i].replace("people", "person"));
+//                $("#generatedText" + id).unhighlight(words[i].replace("person", "people"));
+//            }
+//        }, 2000);
+//    }
 
 }
 
@@ -217,7 +240,9 @@ function fix(node, parent) {
         end = node.attributes.attribute_name0;// + " and \n" + node.attributes.attribute_name1;
     }
     node.parent = parent;
-    node.name = node.name.replace(/\(.+\)/, "") + ": " + end;
+    var action = node.name.replace(/\(.+\)/, "");
+    node.action = action;
+    node.name = action + ": " + end;
     if (node.name === "Done: undefined")
         node.name = "Done";
     node.questionID = questionID;
@@ -227,8 +252,9 @@ function fix(node, parent) {
 
 var questionID;
 
+
 function displayTree(id, data) {
-    console.log(data);
+    //console.log(data);
     questionID = id.replace("#generatedTree", "");
 //    data.parent = "null";
 //    var parentname = data.name;
@@ -249,9 +275,11 @@ function displayTree(id, data) {
 //            break;
 //        }
 //    }
-    console.log(data);
+    //console.log(data);
 
-
+    $("#generatedTree" + questionID).html("");
+    svg = null;
+    root = null;
     svg = d3.select(id).append("svg")
             .attr("width", 900)
             .attr("height", 600)
