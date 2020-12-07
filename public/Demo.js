@@ -129,7 +129,7 @@ function load(id) {
     console.log(text);
 
 
-    $.ajax({url: "http://160.85.252.156:5004/api/text_to_tree?text=" + text.replace(" ", "_"), method: "get"}).done(function (dat2) {
+    $.ajax({url: "http://localhost:5004/api/text_to_tree?text=" + text.replace(" ", "_"), method: "get"}).done(function (dat2) {
         console.log("THE DATA (" + id + ")" + ":");
         console.log(dat2);
         displayTree("#generatedTree" + id, dat2.sampled_data);
