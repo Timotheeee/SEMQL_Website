@@ -206,8 +206,17 @@ sum,filter,extractvalues,done,isempty,min,max,average,count{
 }
 
 
+.humantext div{
+    display:inline-block;
+}
 
+.fixit_btn{
 
+}
+.gen_container{
+    margin-left: -5px;
+    padding-right: 24px;
+}
 
 
 /*graph*/
