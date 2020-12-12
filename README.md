@@ -2,13 +2,13 @@
 The frontend for the SemQL Project
 
 # Instructions
-First execute following command
+First execute the following command
 ```bash
 npm install
 ```
-Finally execute
+Run the server
 ```bash
 npm start
 ```
 
-**Requirements:** Last Node.js version already installed.
+**Requirements:** Latest Node.js version.
